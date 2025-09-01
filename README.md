@@ -19,6 +19,8 @@ SASChallenge/
 ├── savedTaskList.ser
 └── README.md
 
+# Setup Instructions
+
 ## Getting Started
 
 Follow these instructions to run TaskIt on your local machine
@@ -38,11 +40,14 @@ cd SASChallenge
 ### Build the Program
 
 ```bash
-javac -d out src/com/Nash/**/*.java
+javac -d out src/com/Nash/Packages/*/*.java
 ```
 
 ### Run the Program
 
 ```bash
-javac -d out $(find src -name "*.java")
+java -cp out com.Nash.Packages.main.TaskIt
 ```
+
+### Test the Program
+Add a few test scenarios to run through and show functionality
