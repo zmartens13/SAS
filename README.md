@@ -38,7 +38,7 @@ cd SASChallenge
 ### Build the Program
 
 ```bash
-javac -d out src/com/example/**/*.java
+javac -d out src/com/Nash/**/*.java
 ```
 
 ### Run the Program
