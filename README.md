@@ -1,27 +1,28 @@
 # SASChallenge
-Challenge code for a SAS interview
+Coding challenge for a SAS interview
 
 This is a simple, menu-driven console application using Java 21.
 
 ## Project Structure
 
-SASChallenge/
-├── src/
-│   └── com/
-│      └── Nash/
-│         └── Packages/
-│            └── main/
-│               ├── TaskIt.java
-│            └── domain/
-│               ├── Task.java
-│               └── TaskManager.java
-│               ├── Status.java
-├── savedTaskList.ser
-└── README.md
+SASChallenge/  
+|── src/  
+|&nbsp;&nbsp;&nbsp;&nbsp;└── com/  
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── Nash/  
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── Packages/  
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── main/  
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|── TaskIt.java  
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── domain/  
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|── Task.java  
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|── TaskManager.java  
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|── Status.java  
+|── savedTaskList.ser  
+|── README.md  
 
 # Assumptions
 
-User has command line knowledge
+User has command line knowledge  
+User has previously installed Java 21 or newer
 
 
 # Setup Instructions
@@ -53,9 +54,23 @@ java -cp out com.Nash.Packages.main.TaskIt
 ```
 
 ### Test the Program
-Scenario: User adds a task
-    Given the user is at the add task menu, and chooses to add a task
+#### Scenario: User adds a task  
+    Given the user is at the add task menu, and chooses to add a task  
+    When the user enters a valid title, description, and date  
+    And presses enter
+    Then the user should see a confirmation message
+    And be asked if they want to add another task  
+
+#### Scenario: User lists tasks
+    Given the user is at the list task menu
+    When the user chooses to list a type of tasks
+    And presses enter
+    Then the user should see a print out of the tasks they have added
+    And be asked if they want to list a different type of task  
+
+#### Scenario: User updates a task
+    Given the user is at the update task menu, and chooses to update a task
     When the user enters a valid title, description, and date
     And presses enter
     Then the user should see a confirmation message
-    And be asked if they want to add another task
+    And be asked if they want to update another task
