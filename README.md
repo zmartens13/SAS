@@ -74,3 +74,11 @@ java -cp out com.Nash.Packages.main.TaskIt
     And presses enter
     Then the user should see a confirmation message
     And be asked if they want to update another task
+
+#### Scenario: User tries to delete a task number out of bounds
+    Given the user is at the delete task menu
+    When the user is prompted to choose a task to delete
+    And gives an index outside of the listed tasks
+    The user should see a message that the chosen number is not valid
+    And be prompted to choose another task to update
+
