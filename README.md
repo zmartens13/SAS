@@ -19,9 +19,12 @@ SASChallenge/
 ├── savedTaskList.ser
 └── README.md
 
-# Setup Instructions
+# Assumptions
 
-## Getting Started
+User has command line knowledge
+
+
+# Setup Instructions
 
 Follow these instructions to run TaskIt on your local machine
 
@@ -50,4 +53,9 @@ java -cp out com.Nash.Packages.main.TaskIt
 ```
 
 ### Test the Program
-Add a few test scenarios to run through and show functionality
+Scenario: User adds a task
+    Given the user is at the add task menu, and chooses to add a task
+    When the user enters a valid title, description, and date
+    And presses enter
+    Then the user should see a confirmation message
+    And be asked if they want to add another task
