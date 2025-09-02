@@ -23,11 +23,14 @@ public class TaskManager {
 
 	Scanner in = new Scanner(System.in);
 
+	/**
+	 * Responsible for correctly setting up the Taskit program to run as needed Such
+	 * as loading saved tasks and starting interrupt listener
+	 */
 	public void start() {
 
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			//TODO remove
-			System.out.println("Shutdown detected. Cleaning up...");
+			System.out.println();
 			saveTaskList();
 		}));
 
@@ -36,7 +39,7 @@ public class TaskManager {
 	}
 
 	/**
-	 * 
+	 * Root menu of the TaskIt program
 	 */
 	public int mainMenu() {
 		updateStringList();
@@ -47,27 +50,24 @@ public class TaskManager {
 
 		return displayOptions(topMenu);
 
-		// Deciding whether to use if-then-else statements or a switch statement is
-		// based
-		// on readability and the expression that the statement is testing. An
-		// if-then-else
-		// statement can test expressions based on ranges of values or conditions,
-		// whereas a
-		// switch statement tests expressions based only on a single integer, enumerated
-		// value, or String object.
 	}
 
+	/**
+	 * A private helper function that keeps the string version of the TaskList
+	 * updated
+	 */
 	private void updateStringList() {
-		//stringTaskList = taskList.stream().map(Task::toString).collect(Collectors.toCollection(ArrayList::new));
-		// Create an updated arraylist in a new variable then assign the stringtasklist to that new heap space
 		ArrayList<String> updatedList = new ArrayList<String>();
 		for (Task t : taskList) {
 			updatedList.add(t.toString());
 		}
+		stringTaskList = updatedList;
 
 	}
 
 	/**
+	 * Displays the given array of strings to the user with numeric options making
+	 * them selectable
 	 * 
 	 * @param choices An Arraylist of strings that are to be displayed
 	 * @return Returns the value received from user input
@@ -75,7 +75,6 @@ public class TaskManager {
 	private int displayOptions(ArrayList<String> choices) {
 		int index = 1;
 		for (String choice : choices) {
-			// Stringbuilder is more efficient
 			System.out.println(index + ". " + choice);
 			index++;
 		}
@@ -83,8 +82,10 @@ public class TaskManager {
 	}
 
 	/**
+	 * Attempts to get input from the user Handles malformed inputs gracefully calls
+	 * itself recursively until valid input is given
 	 * 
-	 * @return
+	 * @return Returns the user given input
 	 */
 	private int waitForInput() {
 		System.out.println("");
@@ -108,9 +109,17 @@ public class TaskManager {
 	}
 
 	/**
-	 * Called when user chooses the list task option on main menu 
+	 * This function will ask the user the type of task they want listed and then
+	 * list only that type of task
 	 */
 	public void listTasks() {
+		if (taskList.size() < 1) {
+			System.out.println("There are no tasks to be listed, returning to Main Menu");
+			System.out.println("=============================");
+			System.out.println("");
+
+			return;
+		}
 		int listChoice = -1;
 		ArrayList<String> listMenu = new ArrayList<String>(
 				Arrays.asList("Completed Tasks", "Pending Tasks", "All Tasks", "Go back"));
@@ -139,14 +148,14 @@ public class TaskManager {
 				listChoice = 0;
 			}
 			System.out.println("=============================");
-		}
-		//mainMenu();
-		System.out.println();
+			System.out.println();
 
+		}
 	}
 
 	/**
-	 * 
+	 * This function will ask the user to define a new task then add is to the
+	 * taskList to be saved
 	 */
 	public void addTask() {
 		int addChoice = 1;
@@ -160,25 +169,24 @@ public class TaskManager {
 			System.out.println("What is the description of the new task?: ");
 			String description = in.nextLine();
 			System.out.println("What is the due date of the new task?: ");
-			// Add try catch to format the date
 			LocalDate date = validateDate();
 			Task toAdd = new Task(title, description, date);
 			taskList.add(toAdd);
 			System.out.println("Task \"" + title + "\" has been added");
 			System.out.println("=============================");
+			System.out.println();
 			System.out.println("Would you like to add another task?: ");
 
 			addChoice = displayOptions(yesNo);
 		}
 
-		//mainMenu();
 	}
 
 	/**
-	 * 
+	 * This function will ask the user to select a task then update the status of
+	 * that task
 	 */
 	public void updateTask() {
-		// Task updateThis
 		int updateChoice = 1;
 
 		ArrayList<String> printable = stringTaskList;
@@ -186,9 +194,9 @@ public class TaskManager {
 		while (updateChoice == 1 && taskList.size() > 0) {
 
 			ArrayList<String> yesNo = new ArrayList<String>(Arrays.asList("Yes", "No"));
-			System.out.println("Which task would you like to update?");
-			// Adjusting index for user readable input
+			System.out.println("Which task would you like to update? \nEnter 0 to cancel");
 			try {
+				// Adjusting index for user readable input
 				int updateIndex = displayOptions(printable) - 1;
 				if (updateIndex == -1) {
 					break;
@@ -211,8 +219,7 @@ public class TaskManager {
 				System.out.println("Would you like to update another task?: ");
 			} catch (IndexOutOfBoundsException e) {
 				System.out.println("=============================");
-				System.out.println(
-						"That is not a valid task number please select again, \nor choose zero to return to the main menu");
+				System.out.println("That is not a valid task number please select again");
 				System.out.println("=============================");
 				continue;
 			}
@@ -222,12 +229,11 @@ public class TaskManager {
 			updateStringList();
 		}
 
-		//mainMenu();
-
 	}
 
 	/**
-	 * 
+	 * This function will prompt the user to select a task for deleting then delete
+	 * that task after printing out confirmation
 	 */
 	public void deleteTask() {
 
@@ -237,9 +243,17 @@ public class TaskManager {
 		 */
 		int deleteChoice = 1;
 
+		if (taskList.size() < 1) {
+			System.out.println("There are no tasks to be deleted");
+			return;
+		}
+
 		while (deleteChoice == 1 && taskList.size() > 0) {
 
 			System.out.println("Which task would you like to delete?");
+			System.out.println("Or choose 0 to return to the main menu");
+			System.out.println("=============================");
+
 			ArrayList<String> yesNo = new ArrayList<String>(Arrays.asList("Yes", "No"));
 
 			try {
@@ -269,15 +283,14 @@ public class TaskManager {
 
 			deleteChoice = displayOptions(yesNo);
 
-			// Update the list of current tasks before displaying to user
+			// Update the list of current tasks before re-displaying to user
 			updateStringList();
 		}
-		//mainMenu();
 	}
 
 	/**
-	 * Helper method that ingests and validates if the given date is in the correct
-	 * format
+	 * Helper method that ingests input and validates if the given date is in the
+	 * correct format
 	 * 
 	 * @return return the given date, formatted correctly
 	 */
@@ -292,16 +305,18 @@ public class TaskManager {
 			try {
 				date = LocalDate.parse(input, formatter);
 			} catch (DateTimeParseException e) {
-				System.out.println("Invalid date format. Please try again.");
+				System.out.println("Invalid date format. Please try again with (dd/MM/yyyy).");
 			}
 		}
 
 		return date;
 	}
 
+	/**
+	 * A private helper method that saves the tasks from memory into a file when the
+	 * program closes
+	 */
 	private void saveTaskList() {
-		// Save taskList to a file
-
 		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("savedTaskList.ser"))) {
 			out.writeObject(taskList);
 			System.out.println("Tasks saved to file.");
@@ -310,19 +325,26 @@ public class TaskManager {
 		}
 	}
 
+	/**
+	 * A private helper method that loads the tasks from previous executions, listed
+	 * in the serialized file
+	 */
 	private void loadTaskList() {
 		System.out.println("Loading Tasks from file");
 		try {
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream("savedTaskList.ser"));
 			taskList = (ArrayList<Task>) in.readObject();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Serialized task file cannot be found");
+			System.exit(0);
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Reading tasks from file interrupted");
+			System.exit(0);
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Could not ind class in classpath");
+			System.exit(0);
 			e.printStackTrace();
 		}
 

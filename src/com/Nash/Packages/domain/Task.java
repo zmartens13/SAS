@@ -19,7 +19,6 @@ public class Task implements Serializable {
 		super();
 		this.setTitle(title);
 		this.setDesciption(desciption);
-		// Could validate date format
 		this.setDate(date);
 		this.setStatus(Status.PENDING);
 	}
@@ -58,7 +57,7 @@ public class Task implements Serializable {
 
 	@Override
 	public String toString() {
-		return "title=" + title + ", desciption=" + desciption + ", dueDate=" + dueDate + ", status=" + status;
+		return title + ", desciption=" + desciption + ", dueDate=" + dueDate + ", status=" + status;
 	}
 		
 }
