@@ -18,6 +18,7 @@ import java.util.Scanner;
 import com.Nash.Packages.model.Status;
 import com.Nash.Packages.model.Task;
 
+
 public class TaskManager {
 
 	/**
@@ -210,8 +211,6 @@ public class TaskManager {
 
 		int updateChoice = 1;
 
-		
-
 		ArrayList<String> yesNo = new ArrayList<String>(Arrays.asList("Yes", "No"));
 
 		while (updateChoice == 1 && taskList.size() > 0) {
@@ -236,7 +235,7 @@ public class TaskManager {
 						System.out.println("What would you like to make the updated task due date?: ");
 						LocalDate date = validateDate();
 						taskList.get(updateIndex).setDate(date);
-					}else if (taskChoice == 0) {
+					} else if (taskChoice == 0) {
 						break;
 					} else {
 						System.out.println("Please enter a valid field choice, or use 0 to escape");
@@ -256,8 +255,6 @@ public class TaskManager {
 			}
 
 			// Update the list of current tasks before displaying to user
-			System.out.println("Updating string list");
-
 			updateStringList();
 		}
 	}
@@ -312,7 +309,6 @@ public class TaskManager {
 			}
 
 			updateChoice = displayOptions(yesNo);
-			// Update the list of current tasks before displaying to user
 			updateStringList();
 		}
 
@@ -372,8 +368,6 @@ public class TaskManager {
 			}
 
 			deleteChoice = displayOptions(yesNo);
-
-			// Update the list of current tasks before re-displaying to user
 			updateStringList();
 		}
 	}
