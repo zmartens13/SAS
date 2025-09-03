@@ -39,7 +39,7 @@ Follow these instructions to run TaskIt on your local machine
 
 ```bash
 git clone https://github.com/zmartens13/SASChallenge.git
-cd SASChallenge
+cd SAS
 ```
 
 ### Build the Program
