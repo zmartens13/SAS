@@ -14,7 +14,7 @@ public class TaskIt {
 
 		int selection = 0;
 		
-		while (selection != 5) {
+		while (selection != 6) {
 			selection = manager.mainMenu();
 			if (selection == 1) {
 				manager.addTask();
