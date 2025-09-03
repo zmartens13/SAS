@@ -1,4 +1,4 @@
-package com.Nash.Packages.domain;
+package com.Nash.Packages.controller;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,12 +15,24 @@ import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import com.Nash.Packages.model.Status;
+import com.Nash.Packages.model.Task;
+
 public class TaskManager {
 
+	/**
+	 * The main list off user created tasks, should be saved upon exit
+	 */
 	ArrayList<Task> taskList = new ArrayList<Task>();
 
+	/**
+	 * String version of the taskList, used to make tasks printable to user
+	 */
 	ArrayList<String> stringTaskList;
 
+	/**
+	 * Input scanner to accept user input
+	 */
 	Scanner in = new Scanner(System.in);
 
 	/**
@@ -198,11 +210,12 @@ public class TaskManager {
 
 		int updateChoice = 1;
 
-		int taskChoice = 0;
+		
 
 		ArrayList<String> yesNo = new ArrayList<String>(Arrays.asList("Yes", "No"));
 
 		while (updateChoice == 1 && taskList.size() > 0) {
+			int taskChoice = 0;
 			ArrayList<String> taskFields = new ArrayList<String>(Arrays.asList("Title", "Description", "Due Date"));
 			System.out.println("Which task would you like to update? \nEnter 0 to cancel");
 			try {
@@ -397,6 +410,7 @@ public class TaskManager {
 		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("savedTaskList.ser"))) {
 			out.writeObject(taskList);
 			System.out.println("Tasks saved to file.");
+			in.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -406,11 +420,13 @@ public class TaskManager {
 	 * A private helper method that loads the tasks from previous executions, listed
 	 * in the serialized file
 	 */
+	@SuppressWarnings("unchecked")
 	private void loadTaskList() {
 		System.out.println("Loading Tasks from file");
 		try {
-			ObjectInputStream in = new ObjectInputStream(new FileInputStream("savedTaskList.ser"));
-			taskList = (ArrayList<Task>) in.readObject();
+			ObjectInputStream loader = new ObjectInputStream(new FileInputStream("savedTaskList.ser"));
+			taskList = (ArrayList<Task>) loader.readObject();
+			loader.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("Serialized task file cannot be found, attempting to create a new one");
 			saveTaskList();
@@ -418,7 +434,7 @@ public class TaskManager {
 			System.out.println("Reading tasks from file interrupted");
 			System.exit(0);
 		} catch (ClassNotFoundException e) {
-			System.out.println("Could not ind class in classpath");
+			System.out.println("Could not find class in classpath");
 			System.exit(0);
 		}
 

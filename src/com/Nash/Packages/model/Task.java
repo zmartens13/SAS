@@ -1,4 +1,4 @@
-package com.Nash.Packages.domain;
+package com.Nash.Packages.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;

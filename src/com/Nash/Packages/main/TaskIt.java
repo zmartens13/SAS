@@ -1,6 +1,6 @@
 package com.Nash.Packages.main;
 
-import com.Nash.Packages.domain.TaskManager;
+import com.Nash.Packages.controller.TaskManager;
 
 public class TaskIt {
 
