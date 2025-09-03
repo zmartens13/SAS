@@ -46,7 +46,7 @@ public class TaskManager {
 		System.out.println("Welcome to Task-It");
 		System.out.println("What would you like to do?");
 		ArrayList<String> topMenu = new ArrayList<String>(Arrays.asList("Add a Task", "List current Tasks",
-				"Update current Tasks", "Delete current Tasks", "Exit"));
+				"Update Task Status", "Update Task Fields", "Delete current Tasks", "Exit"));
 
 		return displayOptions(topMenu);
 
@@ -114,7 +114,8 @@ public class TaskManager {
 	 */
 	public void listTasks() {
 		if (taskList.size() < 1) {
-			System.out.println("There are no tasks to be listed, returning to Main Menu");
+			System.out.println("There are no tasks to be listed");
+			System.out.println("Returning to the Main Menu");
 			System.out.println("=============================");
 			System.out.println("");
 
@@ -183,21 +184,94 @@ public class TaskManager {
 	}
 
 	/**
+	 * 
+	 */
+	public void updateTask() {
+		if (taskList.size() < 1) {
+			System.out.println("There are no tasks to be updated");
+			System.out.println("Returning to the Main Menu");
+			System.out.println("=============================");
+			System.out.println("");
+
+			return;
+		}
+
+		int updateChoice = 1;
+
+		int taskChoice = 0;
+
+		ArrayList<String> yesNo = new ArrayList<String>(Arrays.asList("Yes", "No"));
+
+		while (updateChoice == 1 && taskList.size() > 0) {
+			ArrayList<String> taskFields = new ArrayList<String>(Arrays.asList("Title", "Description", "Due Date"));
+			System.out.println("Which task would you like to update? \nEnter 0 to cancel");
+			try {
+				// Adjusting index for user readable input
+				int updateIndex = displayOptions(stringTaskList) - 1;
+				if (updateIndex == -1) {
+					break;
+				}
+				while ((taskChoice != 1) && (taskChoice != 2) && (taskChoice != 3)) {
+					taskChoice = displayOptions(taskFields);
+					if (taskChoice == 1) {
+						System.out.println("What would you like to make the updated task title?: ");
+						taskList.get(updateIndex).setTitle(in.nextLine());
+					} else if (taskChoice == 2) {
+						System.out.println("What would you like to make the updated task description?: ");
+						taskList.get(updateIndex).setDescription(in.nextLine());
+					} else if (taskChoice == 3) {
+						System.out.println("What would you like to make the updated task due date?: ");
+						LocalDate date = validateDate();
+						taskList.get(updateIndex).setDate(date);
+					}else if (taskChoice == 0) {
+						break;
+					} else {
+						System.out.println("Please enter a valid field choice, or use 0 to escape");
+						System.out.println("=============================");
+						System.out.println();
+						continue;
+					}
+				}
+				System.out.println("=============================");
+				System.out.println("Would you like to update another task?: ");
+				updateChoice = displayOptions(yesNo);
+			} catch (IndexOutOfBoundsException e) {
+				System.out.println("=============================");
+				System.out.println("That is not a valid task number please select again");
+				System.out.println("=============================");
+				continue;
+			}
+
+			// Update the list of current tasks before displaying to user
+			System.out.println("Updating string list");
+
+			updateStringList();
+		}
+	}
+
+	/**
 	 * This function will ask the user to select a task then update the status of
 	 * that task
 	 */
-	public void updateTask() {
-		int updateChoice = 1;
+	public void updateStatus() {
+		if (taskList.size() < 1) {
+			System.out.println("There are no tasks to be updated");
+			System.out.println("Returning to the Main Menu");
+			System.out.println("=============================");
+			System.out.println("");
 
-		ArrayList<String> printable = stringTaskList;
+			return;
+		}
+
+		int updateChoice = 1;
 
 		while (updateChoice == 1 && taskList.size() > 0) {
 
 			ArrayList<String> yesNo = new ArrayList<String>(Arrays.asList("Yes", "No"));
-			System.out.println("Which task would you like to update? \nEnter 0 to cancel");
+			System.out.println("Which task status would you like to update? \nEnter 0 to cancel");
 			try {
 				// Adjusting index for user readable input
-				int updateIndex = displayOptions(printable) - 1;
+				int updateIndex = displayOptions(stringTaskList) - 1;
 				if (updateIndex == -1) {
 					break;
 				}
@@ -245,6 +319,9 @@ public class TaskManager {
 
 		if (taskList.size() < 1) {
 			System.out.println("There are no tasks to be deleted");
+			System.out.println("=============================");
+			System.out.println("Returning to the Main Menu");
+			System.out.println("");
 			return;
 		}
 
@@ -305,7 +382,7 @@ public class TaskManager {
 			try {
 				date = LocalDate.parse(input, formatter);
 			} catch (DateTimeParseException e) {
-				System.out.println("Invalid date format. Please try again with (dd/MM/yyyy).");
+				System.out.println("Invalid date format. Please try again.");
 			}
 		}
 
@@ -335,17 +412,14 @@ public class TaskManager {
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream("savedTaskList.ser"));
 			taskList = (ArrayList<Task>) in.readObject();
 		} catch (FileNotFoundException e) {
-			System.out.println("Serialized task file cannot be found");
-			System.exit(0);
-			e.printStackTrace();
+			System.out.println("Serialized task file cannot be found, attempting to create a new one");
+			saveTaskList();
 		} catch (IOException e) {
 			System.out.println("Reading tasks from file interrupted");
 			System.exit(0);
-			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			System.out.println("Could not ind class in classpath");
 			System.exit(0);
-			e.printStackTrace();
 		}
 
 	}

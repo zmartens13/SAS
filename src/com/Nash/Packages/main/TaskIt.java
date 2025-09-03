@@ -21,10 +21,12 @@ public class TaskIt {
 			} else if (selection == 2) {
 				manager.listTasks();
 			} else if (selection == 3) {
+				manager.updateStatus();
+			}  else if (selection == 4) {
 				manager.updateTask();
-			} else if (selection == 4) {
-				manager.deleteTask();
 			} else if (selection == 5) {
+				manager.deleteTask();
+			} else if (selection == 6) {
 				System.out.println("Goodbye");
 				System.exit(SAFE_EXIT);
 			} else {

@@ -9,16 +9,16 @@ public class Task implements Serializable {
 
 	private String title;
 	
-	private String desciption;
+	private String description;
 	
 	private LocalDate dueDate;
 	
 	private Status status;
 
-	public Task(String title, String desciption, LocalDate date) {
+	public Task(String title, String description, LocalDate date) {
 		super();
 		this.setTitle(title);
-		this.setDesciption(desciption);
+		this.setDescription(description);
 		this.setDate(date);
 		this.setStatus(Status.PENDING);
 	}
@@ -31,12 +31,12 @@ public class Task implements Serializable {
 		this.title = title;
 	}
 
-	public String getDesciption() {
-		return desciption;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDesciption(String desciption) {
-		this.desciption = desciption;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public LocalDate getDate() {
@@ -57,7 +57,7 @@ public class Task implements Serializable {
 
 	@Override
 	public String toString() {
-		return title + ", desciption=" + desciption + ", dueDate=" + dueDate + ", status=" + status;
+		return title + ", description=" + description + ", dueDate=" + dueDate + ", status=" + status;
 	}
 		
 }
