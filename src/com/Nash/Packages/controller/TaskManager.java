@@ -197,7 +197,8 @@ public class TaskManager {
 	}
 
 	/**
-	 * 
+	 * Prompts the user to choose a task and field to update,
+	 * then updates the chosen object and field
 	 */
 	public void updateTask() {
 		if (taskList.size() < 1) {
